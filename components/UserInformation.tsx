@@ -5,7 +5,6 @@ import { Button } from "./ui/button";
 
 async function UserInformation() {
   const user = await currentUser();
-  console.log(user);
   return (
     <div className="flex flex-col justify-center items-center bg-white mr-6 rounded-lg py-4">
       <Avatar>
