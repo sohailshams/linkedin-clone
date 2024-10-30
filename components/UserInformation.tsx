@@ -2,23 +2,13 @@ import { currentUser } from "@clerk/nextjs/server";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
+import UserAvatar from "./UserAvatar";
 
 async function UserInformation() {
   const user = await currentUser();
   return (
     <div className="flex flex-col justify-center items-center bg-white mr-6 rounded-lg py-4">
-      <Avatar>
-        {user?.id ? (
-          <AvatarImage src={user?.imageUrl} />
-        ) : (
-          <AvatarImage src="https://github.com/shadcn.png" />
-        )}
-        <AvatarFallback>
-          {user?.firstName?.charAt(0)}
-          {user?.lastName?.charAt(0)}
-        </AvatarFallback>
-      </Avatar>
-
+      <UserAvatar user={user} />
       <SignedIn>
         <div className="text-center">
           <p className="font-semibold">
