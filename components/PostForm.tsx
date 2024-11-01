@@ -4,6 +4,7 @@ import UserAvatar from "./UserAvatar";
 import { Button } from "./ui/button";
 import { ImageIcon, XIcon } from "lucide-react";
 import React, { useRef, useState } from "react";
+import CreatePostAction from "@/Actions/CreatePostAction";
 
 function PostForm() {
   const ref = useRef<HTMLFormElement>(null);
@@ -23,9 +24,33 @@ function PostForm() {
     }
   };
 
+  const handlePostAction = async (formData: FormData) => {
+    const copyFormData = formData;
+    ref.current?.reset(); // Reset form values
+    const inputText = copyFormData.get("postInput") as string;
+    if (inputText.trim() === "") {
+      throw new Error("Please enter a post.");
+    }
+    setPreview(null);
+
+    try {
+      await CreatePostAction(copyFormData);
+    } catch (error) {
+      console.error("Error posting post:", error);
+    }
+  };
+
   return (
     <div className="mb-2">
-      <form ref={ref} action="" className="p-3 bg-white rounded-lg">
+      <form
+        ref={ref}
+        action={(formData) => {
+          // Handle form submission with sever action
+          handlePostAction(formData);
+          // Toast notification based on above functions success or failure
+        }}
+        className="p-3 bg-white rounded-lg"
+      >
         <div className="flex items-center space-x-2">
           <UserAvatar user={user} />
           <input
