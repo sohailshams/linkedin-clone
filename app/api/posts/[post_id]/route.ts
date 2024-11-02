@@ -8,9 +8,9 @@ export async function GET(
   { params }: { params: { post_id: string } }
 ) {
   await connectDB();
-
+  const { post_id } = await params;
   try {
-    const post = await Post.findById(params.post_id);
+    const post = await Post.findById(post_id);
 
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
@@ -33,13 +33,13 @@ export async function DELETE(
   request: Request,
   { params }: { params: { post_id: string } }
 ) {
-  auth.protect();
+  // auth.protect();
 
   await connectDB();
   const { userId }: DeletePostRequestBody = await request.json();
-
+  const { post_id } = await params;
   try {
-    const post = await Post.findById(params.post_id);
+    const post = await Post.findById(post_id);
 
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
