@@ -10,7 +10,7 @@ export interface AddPostRequestBody {
   imageUrl?: string | null;
 }
 export async function POST(request: Request) {
-  //   auth.protect();
+  auth.protect();
 
   try {
     await connectDB();
@@ -33,7 +33,6 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  console.log("inside get request");
   try {
     await connectDB();
     const posts = await Post.getAllPosts();
