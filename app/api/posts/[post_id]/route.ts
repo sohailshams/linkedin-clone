@@ -1,10 +1,7 @@
 import connectDB from "@/Mongodb/db";
 import { Post } from "@/Mongodb/Models/Post";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-
-export interface LikePostRequestBody {
-  userId: string;
-}
 
 export async function GET(
   request: Request,
@@ -19,23 +16,27 @@ export async function GET(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    const likes = post.likes;
-    return NextResponse.json(likes);
+    return NextResponse.json(post);
   } catch (error) {
     return NextResponse.json(
-      { error: "An error occurred while fetching likes" },
+      { error: "An error occurred while fetching the post" },
       { status: 500 }
     );
   }
 }
 
-export async function POST(
+export interface DeletePostRequestBody {
+  userId: string;
+}
+
+export async function DELETE(
   request: Request,
   { params }: { params: { post_id: string } }
 ) {
-  await connectDB();
+  auth.protect();
 
-  const { userId }: LikePostRequestBody = await request.json();
+  await connectDB();
+  const { userId }: DeletePostRequestBody = await request.json();
 
   try {
     const post = await Post.findById(params.post_id);
@@ -44,11 +45,16 @@ export async function POST(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    await post.likePost(userId);
-    return NextResponse.json({ message: "Post liked successfully" });
+    if (post.user.userId !== userId) {
+      throw new Error("Post does not belong to the user");
+    }
+
+    await post.deletePost();
+
+    return NextResponse.json({ message: "Post deleted successfully" });
   } catch (error) {
     return NextResponse.json(
-      { error: "An error occurred while liking the post" },
+      { error: "An error occurred while deleting the post" },
       { status: 500 }
     );
   }
