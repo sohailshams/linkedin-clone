@@ -13,8 +13,9 @@ export async function POST(
   await connectDB();
 
   const { userId }: UnlikePostRequestBody = await request.json();
+  const { post_id } = await params;
   try {
-    const post = await Post.findById(params.post_id);
+    const post = await Post.findById(post_id);
 
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });

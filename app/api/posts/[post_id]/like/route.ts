@@ -7,10 +7,10 @@ export async function GET(
   { params }: { params: { post_id: string } }
 ) {
   await connectDB();
-
+  const { post_id } = await params;
   try {
-    const post = await Post.findById(params.post_id);
-
+    const post = await Post.findById(post_id);
+    console.log("post", post);
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
@@ -36,9 +36,9 @@ export async function POST(
   await connectDB();
 
   const { userId }: LikePostRequestBody = await request.json();
-
+  const { post_id } = await params;
   try {
-    const post = await Post.findById(params.post_id);
+    const post = await Post.findById(post_id);
 
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
