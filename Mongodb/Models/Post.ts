@@ -1,5 +1,5 @@
 import { IUser } from "@/Types/AppUser";
-import { Comment, IComment, ICommentBase } from "@/Types/Comment";
+import { Comment, IComment, ICommentBase } from "@/Mongodb/Models/Comment";
 import mongoose, { Schema, Document, models, Model, Types } from "mongoose";
 import path from "path";
 
@@ -77,7 +77,7 @@ PostSchema.methods.deletePost = async function () {
 PostSchema.methods.commentOnPost = async function (commentToAdd: ICommentBase) {
   try {
     const comment = await Comment.create(commentToAdd);
-    this.comments.push(comment);
+    this.comments.push(comment._id);
     await this.save();
   } catch (error) {
     console.log("Error while commenting on the post");
@@ -87,7 +87,7 @@ PostSchema.methods.commentOnPost = async function (commentToAdd: ICommentBase) {
 PostSchema.methods.getAllComments = async function () {
   try {
     await this.populate({
-      path: "comment",
+      path: "comments",
       options: { sort: { createdAt: -1 } }, // sort comments by newest first
     });
     return this.comments;
