@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { ImageIcon, XIcon } from "lucide-react";
 import React, { useRef, useState } from "react";
 import CreatePostAction from "@/Actions/CreatePostAction";
+import { CldUploadWidget } from "next-cloudinary";
 
 function PostForm() {
   const ref = useRef<HTMLFormElement>(null);
@@ -59,14 +60,41 @@ function PostForm() {
             placeholder="Start a post..."
             className="flex-1 rounded-full py-3 px-4 border outline-none"
           />
-          <input
+          {/* <input
             ref={inputFileRef}
             type="file"
             name="postImage"
             accept="image/*"
             hidden
             onChange={handleImageChage}
-          />
+          /> */}
+          <CldUploadWidget
+            uploadPreset="unsigned"
+            onSuccess={(result, { widget }) => {
+              console.log("result:", result);
+              // setResource(result?.info);  // { public_id, secure_url, etc }
+            }}
+            onQueuesEnd={(result, { widget }) => {
+              widget.close();
+            }}
+          >
+            {({ open }) => {
+              function handleOnClick() {
+                // setResource(undefined);
+                open();
+              }
+              return (
+                <button
+                  hidden
+                  ref={inputFileRef}
+                  type="button"
+                  onClick={handleOnClick}
+                >
+                  Upload an Image
+                </button>
+              );
+            }}
+          </CldUploadWidget>
           <button type="submit" hidden>
             Post
           </button>
