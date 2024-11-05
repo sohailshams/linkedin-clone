@@ -5,7 +5,11 @@ import { Button } from "./ui/button";
 import { ImageIcon, XIcon } from "lucide-react";
 import React, { useRef, useState } from "react";
 import CreatePostAction from "@/Actions/CreatePostAction";
-import { CldUploadWidget } from "next-cloudinary";
+import {
+  CldUploadWidget,
+  CloudinaryUploadWidgetInfo,
+  CloudinaryUploadWidgetResults,
+} from "next-cloudinary";
 
 function PostForm() {
   const ref = useRef<HTMLFormElement>(null);
@@ -69,9 +73,11 @@ function PostForm() {
             onChange={handleImageChage}
           /> */}
           <CldUploadWidget
-            uploadPreset="unsigned"
+            uploadPreset="ml_default"
             onSuccess={(result, { widget }) => {
-              console.log("result:", result);
+              if (typeof result!.info === "object" && "url" in result!.info) {
+                setPreview(result!.info?.url);
+              }
               // setResource(result?.info);  // { public_id, secure_url, etc }
             }}
             onQueuesEnd={(result, { widget }) => {
