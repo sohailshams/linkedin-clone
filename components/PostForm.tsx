@@ -13,15 +13,10 @@ import {
 
 function PostForm() {
   const ref = useRef<HTMLFormElement>(null);
-  const inputFileRef = useRef<HTMLInputElement>(null);
+  const inputFileRef = useRef<HTMLButtonElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const { user } = useUser();
-  const handleImageChage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const imageFile = event.target.files?.[0];
-    if (imageFile) {
-      setPreview(URL.createObjectURL(imageFile));
-    }
-  };
+
   const handleRemoveImage = () => {
     setPreview(null);
     if (inputFileRef.current) {
@@ -64,29 +59,16 @@ function PostForm() {
             placeholder="Start a post..."
             className="flex-1 rounded-full py-3 px-4 border outline-none"
           />
-          {/* <input
-            ref={inputFileRef}
-            type="file"
-            name="postImage"
-            accept="image/*"
-            hidden
-            onChange={handleImageChage}
-          /> */}
           <CldUploadWidget
             uploadPreset="ml_default"
             onSuccess={(result, { widget }) => {
               if (typeof result!.info === "object" && "url" in result!.info) {
                 setPreview(result!.info?.url);
               }
-              // setResource(result?.info);  // { public_id, secure_url, etc }
-            }}
-            onQueuesEnd={(result, { widget }) => {
-              widget.close();
             }}
           >
             {({ open }) => {
               function handleOnClick() {
-                // setResource(undefined);
                 open();
               }
               return (
