@@ -66,6 +66,11 @@ function PostForm() {
                 setPreview(result!.info?.url);
               }
             }}
+            options={{
+              resourceType: "image",
+              clientAllowedFormats: ["jpg", "png", "jpeg"],
+              multiple: false,
+            }}
           >
             {({ open }) => {
               function handleOnClick() {
