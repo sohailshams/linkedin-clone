@@ -5,8 +5,16 @@ import { currentUser } from "@clerk/nextjs/server";
 export default async function Home() {
   const user = await currentUser();
   return (
-    <div className="grid grid-cols-8 mt-5 sm:px-5">
-      <section className="hidden md:inline md:col-span-2">
+    <div
+      className={
+        user
+          ? "grid grid-cols-8 mt-5 sm:px-5"
+          : "grid grid-cols-1 m-auto max-w-96 mt-40"
+      }
+    >
+      <section
+        className={user ? "hidden md:inline md:col-span-2" : "inline pl-4"}
+      >
         <UserInformation />
       </section>
       {user && (
