@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { ImageIcon, XIcon } from "lucide-react";
 import React, { useRef, useState } from "react";
 import CreatePostAction from "@/Actions/CreatePostAction";
+import DeletePostImage from "@/Actions/DeletePostImage";
 import {
   CldUploadWidget,
   CloudinaryUploadWidgetInfo,
@@ -15,9 +16,20 @@ function PostForm() {
   const ref = useRef<HTMLFormElement>(null);
   const inputFileRef = useRef<HTMLButtonElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [cloudinaryImageId, setCloudinaryImageId] = useState<string | null>(
+    null
+  );
   const { user } = useUser();
 
-  const handleRemoveImage = () => {
+  const handlImageUpdateDelete = async () => {
+    if (!preview) {
+      return;
+    }
+    const removePostImage = await DeletePostImage(cloudinaryImageId);
+    if (removePostImage.result === "ok") {
+      setCloudinaryImageId(null);
+    }
+
     setPreview(null);
     if (inputFileRef.current) {
       inputFileRef.current.value = ""; // Reset file input value
@@ -64,6 +76,7 @@ function PostForm() {
             onSuccess={(result, { widget }) => {
               if (typeof result!.info === "object" && "url" in result!.info) {
                 setPreview(result!.info?.url);
+                setCloudinaryImageId(result!.info?.public_id);
               }
             }}
             options={{
@@ -101,7 +114,10 @@ function PostForm() {
         <div className="flex justify-end space-x-2 mt-2">
           <Button
             type="button"
-            onClick={() => inputFileRef.current?.click()}
+            onClick={async () => {
+              inputFileRef.current?.click();
+              handlImageUpdateDelete();
+            }}
             className="bg-[#0a66c2]"
           >
             <ImageIcon className="mr-2" size={16} color="currentColor" />
@@ -111,7 +127,7 @@ function PostForm() {
             <Button
               type="button"
               variant="destructive"
-              onClick={handleRemoveImage}
+              onClick={handlImageUpdateDelete}
             >
               <XIcon className="mr-2" size={16} color="currentColor" />
               Remove Image
