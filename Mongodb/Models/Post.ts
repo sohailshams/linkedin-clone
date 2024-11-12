@@ -1,7 +1,6 @@
 import { IUser } from "@/Types/AppUser";
 import { Comment, IComment, ICommentBase } from "@/Mongodb/Models/Comment";
 import mongoose, { Schema, Document, models, Model, Types } from "mongoose";
-import path from "path";
 
 export interface IPostBase {
   user: IUser;
