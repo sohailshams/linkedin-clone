@@ -1,6 +1,6 @@
 "use server";
 
-import { AddPostRequestBody } from "@/app/pages/api/posts/route";
+import { AddPostRequestBody } from "@/app/api/posts/route";
 import { Post } from "@/Mongodb/Models/Post";
 import { IUser } from "@/Types/AppUser";
 import { currentUser } from "@clerk/nextjs/server";
@@ -12,25 +12,23 @@ export default async function (formData: FormData) {
   }
 
   const postInput = formData.get("postInput") as string;
-  const postImage = formData.get("postImage") as File;
-  let imageUrl: string | undefined;
+  const postImage = formData.get("postImage") as string;
+
   if (!postInput) {
     throw new Error("Post input is required");
   }
-
   const userDB: IUser = {
     userId: user.id,
     userImage: user.imageUrl,
     firstName: user.firstName || "",
     lastName: user.lastName || "",
   };
-
   try {
-    if (postImage.size > 0) {
+    if (postImage) {
       const postWithImage: AddPostRequestBody = {
         user: userDB,
         postText: postInput,
-        // imageUrl: image_url
+        imageUrl: postImage,
       };
       await Post.create(postWithImage);
     } else {
@@ -40,5 +38,7 @@ export default async function (formData: FormData) {
       };
       await Post.create(postWithoutImage);
     }
-  } catch (error) {}
+  } catch (error: any) {
+    throw new Error("Error creating post", error);
+  }
 }
