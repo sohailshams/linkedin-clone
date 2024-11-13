@@ -58,6 +58,9 @@ function PostForm() {
         ref={ref}
         action={(formData) => {
           // Handle form submission with sever action
+          if (preview) {
+            formData.append("postImage", preview);
+          }
           handlePostAction(formData);
           // Toast notification based on above functions success or failure
         }}
@@ -81,6 +84,7 @@ function PostForm() {
             }}
             options={{
               resourceType: "image",
+              fieldName: "postImage",
               clientAllowedFormats: ["jpg", "png", "jpeg"],
               multiple: false,
             }}
