@@ -13,7 +13,6 @@ export async function POST(request: Request) {
   auth.protect();
 
   try {
-    await connectDB();
     const { user, postText, imageUrl }: AddPostRequestBody =
       await request.json();
     const newPost: IPostBase = {
