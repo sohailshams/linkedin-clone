@@ -5,6 +5,7 @@ import connectDB from "@/Mongodb/db";
 import { Post } from "@/Mongodb/Models/Post";
 import { IUser } from "@/Types/AppUser";
 import { currentUser } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 export default async function (formData: FormData) {
   const user = await currentUser();
@@ -22,7 +23,7 @@ export default async function (formData: FormData) {
   }
   const userDB: IUser = {
     userId: user.id,
-    userImage: user.imageUrl,
+    imageUrl: user.imageUrl,
     firstName: user.firstName || "",
     lastName: user.lastName || "",
   };
@@ -31,7 +32,7 @@ export default async function (formData: FormData) {
       const postWithImage: AddPostRequestBody = {
         user: userDB,
         postText: postInput,
-        imageUrl: postImage,
+        postImageUrl: postImage,
       };
       await Post.create(postWithImage);
     } else {
@@ -44,4 +45,6 @@ export default async function (formData: FormData) {
   } catch (error: any) {
     throw new Error("Error creating post", error);
   }
+
+  revalidatePath("/");
 }

@@ -1,9 +1,17 @@
+import PostFeed from "@/components/PostFeed";
 import PostForm from "@/components/PostForm";
 import UserInformation from "@/components/UserInformation";
+import connectDB from "@/Mongodb/db";
+import { Post } from "@/Mongodb/Models/Post";
 import { currentUser } from "@clerk/nextjs/server";
+
+const revalidate = 0;
 
 export default async function Home() {
   const user = await currentUser();
+  await connectDB();
+  const posts = await Post.getAllPosts();
+
   return (
     <div
       className={
@@ -21,7 +29,7 @@ export default async function Home() {
         <>
           <section className="col-span-full md:col-span-6 xl:col-span-4 xl:max-w-xl mx-auto w-full">
             <PostForm />
-            {/* post feed */}
+            <PostFeed posts={posts} />
           </section>
 
           <section>{/* widget */}</section>
