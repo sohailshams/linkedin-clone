@@ -5,7 +5,7 @@ import mongoose, { Schema, Document, models, Model, Types } from "mongoose";
 export interface IPostBase {
   user: IUser;
   postText: string;
-  imageUrl?: string;
+  postImageUrl?: string;
   comments?: IComment[];
   likes?: string[];
 }
@@ -35,12 +35,12 @@ const PostSchema = new Schema<IPostDocument>(
   {
     user: {
       userId: { type: String, required: true },
-      userImage: { type: String, required: true },
+      imageUrl: { type: String, required: true },
       firstName: { type: String, required: true },
       lastName: { type: String },
     },
     postText: { type: String, required: true },
-    imageUrl: { type: String },
+    postImageUrl: { type: String },
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment", default: [] }],
     likes: { type: [String] },
   },

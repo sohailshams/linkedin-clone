@@ -7,18 +7,18 @@ import { NextResponse } from "next/server";
 export interface AddPostRequestBody {
   user: IUser;
   postText: string;
-  imageUrl?: string | null;
+  postImageUrl?: string | null;
 }
 export async function POST(request: Request) {
   auth.protect();
 
   try {
-    const { user, postText, imageUrl }: AddPostRequestBody =
+    const { user, postText, postImageUrl }: AddPostRequestBody =
       await request.json();
     const newPost: IPostBase = {
       user,
       postText,
-      ...(imageUrl && { imageUrl }),
+      ...(postImageUrl && { postImageUrl: postImageUrl }),
     };
 
     const post = await Post.create(newPost);
