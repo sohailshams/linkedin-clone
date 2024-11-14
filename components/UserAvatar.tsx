@@ -1,15 +1,16 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { UserResource } from "@clerk/types";
 import { User } from "@clerk/nextjs/server";
+import { IUser } from "@/Types/AppUser";
 
 type UserAvatarProps = {
-  user: User | UserResource | null | undefined;
+  user: User | UserResource | null | undefined | IUser;
 };
 
 function UserAvatar({ user }: UserAvatarProps) {
   return (
     <Avatar>
-      {user?.id ? (
+      {user ? (
         <AvatarImage src={user?.imageUrl} />
       ) : (
         <AvatarImage src="https://github.com/shadcn.png" />
