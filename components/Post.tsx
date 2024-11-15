@@ -8,6 +8,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Trash2 } from "lucide-react";
 import deletePostAction from "@/Actions/deletePostAction";
+import Image from "next/image";
 
 type PostProps = {
   post: IPostDocument;
@@ -51,6 +52,18 @@ function Post({ post }: PostProps) {
             </Button>
           )}
         </div>
+      </div>
+      <div>
+        <p className="px-4 pb-2 mt-2">{post.postText}</p>
+        {post.postImageUrl && (
+          <Image
+            src={post.postImageUrl}
+            alt="Post Image"
+            width={500}
+            height={500}
+            className="w-full mx-auto"
+          />
+        )}
       </div>
     </div>
   );
