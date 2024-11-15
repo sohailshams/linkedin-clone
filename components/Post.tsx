@@ -5,6 +5,9 @@ import { useUser } from "@clerk/nextjs";
 import UserAvatar from "./UserAvatar";
 import ReactTimeago from "react-timeago";
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Trash2 } from "lucide-react";
+import deletePostAction from "@/Actions/deletePostAction";
 
 type PostProps = {
   post: IPostDocument;
@@ -22,18 +25,31 @@ function Post({ post }: PostProps) {
 
         <div className="flex justify-between flex-1">
           <div>
-            <p className="font-semibold">
-              {post.user.firstName} {post.user.lastName}
+            <div className="font-semibold flex">
+              <p>
+                {post.user.firstName} {post.user.lastName}
+              </p>
               {isAuther && (
                 <Badge variant="secondary" className="ml-2">
                   Auther
                 </Badge>
               )}
-            </p>
+            </div>
             <p className="text-xs text-gray-400">
               <ReactTimeago date={new Date(post.createdAt)} />
             </p>
           </div>
+
+          {isAuther && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                const deletePost = deletePostAction(post._id.toString());
+              }}
+            >
+              <Trash2 />
+            </Button>
+          )}
         </div>
       </div>
     </div>
