@@ -77,8 +77,11 @@ function PostForm() {
           <CldUploadWidget
             uploadPreset="ml_default"
             onSuccess={(result, { widget }) => {
-              if (typeof result!.info === "object" && "url" in result!.info) {
-                setPreview(result!.info?.url);
+              if (
+                typeof result!.info === "object" &&
+                "secure_url" in result!.info
+              ) {
+                setPreview(result!.info?.secure_url);
                 setCloudinaryImageId(result!.info?.public_id);
               }
             }}
