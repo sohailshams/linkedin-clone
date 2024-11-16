@@ -11,6 +11,7 @@ export default async function Home() {
   const user = await currentUser();
   await connectDB();
   const posts = await Post.getAllPosts();
+  const parsedPosts = JSON.parse(JSON.stringify(posts));
 
   return (
     <div
@@ -29,7 +30,7 @@ export default async function Home() {
         <>
           <section className="col-span-full md:col-span-6 xl:col-span-4 xl:max-w-xl mx-auto w-full">
             <PostForm />
-            <PostFeed posts={posts} />
+            <PostFeed posts={parsedPosts} />
           </section>
 
           <section>{/* widget */}</section>
