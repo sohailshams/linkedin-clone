@@ -1,15 +1,15 @@
-import { IPostDocument } from "@/Mongodb/Models/Post";
+import { IPostFeed } from "@/Mongodb/Models/Post";
 import Post from "./Post";
 
 type PostFeedProps = {
-  posts: IPostDocument[];
+  posts: IPostFeed[];
 };
 
 function PostFeed({ posts }: PostFeedProps) {
   return (
     <div className="space-y-2 pb-20">
       {posts.map((post) => (
-        <Post key={post._id.toString()} post={post} />
+        <Post key={post?._id} post={post} />
       ))}
     </div>
   );
