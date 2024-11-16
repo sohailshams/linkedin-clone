@@ -1,6 +1,6 @@
 "use client";
 
-import { IPostDocument } from "@/Mongodb/Models/Post";
+import { IPostFeed } from "@/Mongodb/Models/Post";
 import { useUser } from "@clerk/nextjs";
 import UserAvatar from "./UserAvatar";
 import ReactTimeago from "react-timeago";
@@ -9,9 +9,10 @@ import { Button } from "./ui/button";
 import { Trash2 } from "lucide-react";
 import deletePostAction from "@/Actions/deletePostAction";
 import Image from "next/image";
+import PostToolbar from "./PostToolbar";
 
 type PostProps = {
-  post: IPostDocument;
+  post: IPostFeed;
 };
 
 function Post({ post }: PostProps) {
@@ -45,7 +46,7 @@ function Post({ post }: PostProps) {
             <Button
               variant="outline"
               onClick={() => {
-                const deletePost = deletePostAction(post._id.toString());
+                const deletePost = deletePostAction(post._id);
               }}
             >
               <Trash2 />
@@ -65,6 +66,7 @@ function Post({ post }: PostProps) {
           />
         )}
       </div>
+      <PostToolbar post={post} />
     </div>
   );
 }
