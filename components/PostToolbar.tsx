@@ -43,13 +43,20 @@ function PostToolbar({ post }: PostToobarProps) {
           )}
         </div>
       </div>
-      <div>
-        <Button variant="ghost" className={liked ? "text-[#4881c2]" : ""}>
+      <div className="flex justify-between p-2 border-t">
+        <Button
+          variant="ghost"
+          className={liked ? "text-[#4881c2] postButton" : "postButton"}
+        >
           <ThumbsUpIcon className={cn("mr-1", liked && "fill-[#4881c2]")} />
           Like
         </Button>
 
-        <Button variant="ghost">
+        <Button
+          variant="ghost"
+          className="postButton"
+          onClick={() => setIsCommentOpen(!isCommentOpen)}
+        >
           <MessageCircle
             className={cn(
               "mr-1",
