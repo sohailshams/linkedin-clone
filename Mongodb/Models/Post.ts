@@ -25,11 +25,15 @@ interface IPostMethods {
 }
 
 interface IPostStatics {
-  getAllPosts(): Promise<IPostDocument[]>;
+  getAllPosts(): Promise<IPostFeed[]>;
 }
 
 export interface IPostDocument extends IPost, IPostMethods {} // singular instance of a post
 interface IPostModel extends IPostStatics, Model<IPostDocument> {} // all posts
+
+export interface IPostFeed extends Omit<IPostDocument, "_id"> {
+  _id: string;
+}
 
 const PostSchema = new Schema<IPostDocument>(
   {
@@ -107,7 +111,7 @@ PostSchema.statics.getAllPosts = async function () {
       .populate("likes")
       .lean(); // lean() returns a plain JS object instead of a mongoose document
 
-    return posts.map((post: IPostDocument) => ({
+    return posts.map((post: IPostFeed) => ({
       ...post,
       _id: post._id.toString(),
       comments: post.comments?.map((comment: IComment) => ({
