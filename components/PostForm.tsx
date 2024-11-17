@@ -128,7 +128,7 @@ function PostForm() {
             className="bg-[#0a66c2]"
           >
             <ImageIcon className="mr-2" size={16} color="currentColor" />
-            {preview ? "Change" : "Add"} Image
+            {preview ? "Change" : "Add"} Media
           </Button>
           {preview && (
             <Button

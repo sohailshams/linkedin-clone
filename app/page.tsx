@@ -24,7 +24,7 @@ export default async function Home() {
       <section
         className={user ? "hidden md:inline md:col-span-2" : "inline pl-4"}
       >
-        <UserInformation />
+        <UserInformation posts={parsedPosts} />
       </section>
       {user && (
         <>
