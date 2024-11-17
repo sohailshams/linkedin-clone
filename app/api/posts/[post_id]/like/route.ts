@@ -10,7 +10,6 @@ export async function GET(
   const { post_id } = await params;
   try {
     const post = await Post.findById(post_id);
-    console.log("post", post);
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
