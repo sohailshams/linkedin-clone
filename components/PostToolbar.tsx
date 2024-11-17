@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { MessageCircle, Repeat2, Send, ThumbsUpIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LikePostRequestBody } from "@/app/api/posts/[post_id]/like/route";
+import { UnlikePostRequestBody } from "@/app/api/posts/[post_id]/unlike/route";
 
 type PostToobarProps = {
   post: IPostFeed;
@@ -22,6 +24,51 @@ function PostToolbar({ post }: PostToobarProps) {
       setLiked(true);
     }
   }, [user, post]);
+
+  const likeOrDislike = async () => {
+    if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+    const originalLiked = liked;
+    const originalNumberOfLikes = numberOfLikes;
+    const updatedLikes = liked
+      ? numberOfLikes?.filter((like) => like !== user.id)
+      : [...(numberOfLikes ?? []), user.id];
+
+    const body: LikePostRequestBody | UnlikePostRequestBody = {
+      userId: user.id,
+    };
+    setLiked(!liked);
+    setNumberOfLikes(updatedLikes);
+
+    const response = await fetch(
+      `/api/posts/${post._id}/${liked ? "unlike" : "like"}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    if (!response.ok) {
+      setLiked(originalLiked);
+      setNumberOfLikes(originalNumberOfLikes);
+      throw new Error("Error liking/disliking post");
+    }
+
+    const updatedLikesResponse = await fetch(`/api/posts/${post._id}/like`);
+    if (!updatedLikesResponse.ok) {
+      setLiked(originalLiked);
+      setNumberOfLikes(originalNumberOfLikes);
+      throw new Error("Error fetching updated likes");
+    }
+
+    const updatedLikesData = await updatedLikesResponse.json();
+    setNumberOfLikes(updatedLikesData.likes);
+  };
 
   return (
     <div>
@@ -46,6 +93,7 @@ function PostToolbar({ post }: PostToobarProps) {
       <div className="flex justify-between p-2 border-t">
         <Button
           variant="ghost"
+          onClick={likeOrDislike}
           className={liked ? "text-[#4881c2] postButton" : "postButton"}
         >
           <ThumbsUpIcon className={cn("mr-1", liked && "fill-[#4881c2]")} />
