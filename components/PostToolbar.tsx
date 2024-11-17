@@ -8,6 +8,7 @@ import { MessageCircle, Repeat2, Send, ThumbsUpIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LikePostRequestBody } from "@/app/api/posts/[post_id]/like/route";
 import { UnlikePostRequestBody } from "@/app/api/posts/[post_id]/unlike/route";
+import CommentFeed from "./CommentFeed";
 
 type PostToobarProps = {
   post: IPostFeed;
@@ -124,6 +125,12 @@ function PostToolbar({ post }: PostToobarProps) {
           Send
         </Button>
       </div>
+
+      {isCommentOpen && (
+        <div className="p-4">
+          <CommentFeed post={post} />
+        </div>
+      )}
     </div>
   );
 }
