@@ -31,9 +31,9 @@ export interface DeletePostRequestBody {
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { post_id: string } }
+  { params }: { params: Promise<{ post_id: string }> }
 ) {
-  // auth.protect();
+  auth.protect();
 
   await connectDB();
   const { userId }: DeletePostRequestBody = await request.json();
