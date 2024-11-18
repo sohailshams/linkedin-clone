@@ -19,7 +19,7 @@ async function UserInformation({ posts }: UserInformationProps) {
       post?.comments?.filter((comment) => comment.user.userId === user?.id) ||
       []
   );
-  console.log(userPosts);
+
   return (
     <div className="flex flex-col justify-center items-center bg-white mr-6 rounded-lg py-4">
       <UserAvatar user={user} />
