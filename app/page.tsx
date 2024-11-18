@@ -5,8 +5,6 @@ import connectDB from "@/Mongodb/db";
 import { Post } from "@/Mongodb/Models/Post";
 import { currentUser } from "@clerk/nextjs/server";
 
-const revalidate = 0;
-
 export default async function Home() {
   const user = await currentUser();
   await connectDB();
