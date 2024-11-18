@@ -34,7 +34,7 @@ export interface AddCommentRequestBody {
 
 export async function POST(
   request: Request,
-  { params }: { params: { post_id: string } }
+  { params }: { params: Promise<{ post_id: string }> }
 ) {
   const { user, commentText }: AddCommentRequestBody = await request.json();
 
