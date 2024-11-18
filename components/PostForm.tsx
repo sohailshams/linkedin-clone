@@ -11,6 +11,7 @@ import {
   CloudinaryUploadWidgetInfo,
   CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
+import { toast } from "sonner";
 
 function PostForm() {
   const ref = useRef<HTMLFormElement>(null);
@@ -61,8 +62,13 @@ function PostForm() {
           if (preview) {
             formData.append("postImage", preview);
           }
-          handlePostAction(formData);
+          const promise = handlePostAction(formData);
           // Toast notification based on above functions success or failure
+          toast.promise(promise, {
+            loading: "Creating post...",
+            success: "Post created successfully",
+            error: "Post creation failed",
+          });
         }}
         className="p-3 bg-white rounded-lg"
       >

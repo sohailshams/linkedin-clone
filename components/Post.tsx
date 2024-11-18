@@ -10,6 +10,7 @@ import { Trash2 } from "lucide-react";
 import deletePostAction from "@/Actions/deletePostAction";
 import Image from "next/image";
 import PostToolbar from "./PostToolbar";
+import { toast } from "sonner";
 
 type PostProps = {
   post: IPostFeed;
@@ -46,7 +47,12 @@ function Post({ post }: PostProps) {
             <Button
               variant="outline"
               onClick={() => {
-                const deletePost = deletePostAction(post._id);
+                const promise = deletePostAction(post._id);
+                toast.promise(promise, {
+                  loading: "Deleting post...",
+                  success: "Post deleted successfully",
+                  error: "Failed to delete post!",
+                });
               }}
             >
               <Trash2 />

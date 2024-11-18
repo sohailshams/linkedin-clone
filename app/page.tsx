@@ -33,7 +33,10 @@ export default async function Home() {
             <PostFeed posts={parsedPosts} />
           </section>
 
-          <section>{/* widget */}</section>
+          <section className="hidden xl:inline justify-center col-span-2">
+            {/* TODO */}
+            {/* <Widget /> */}
+          </section>
         </>
       )}
     </div>

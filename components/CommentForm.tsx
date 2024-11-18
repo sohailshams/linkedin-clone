@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRef } from "react";
 import UserAvatar from "./UserAvatar";
 import createCommentAction from "@/Actions/CreateCommentAction";
+import { toast } from "sonner";
 
 type CommentFormProp = {
   postId: string;
@@ -33,9 +34,14 @@ function CommentForm({ postId }: CommentFormProp) {
     <form
       ref={ref}
       action={(formData) => {
-        const commentInput = handleCommentInput(formData);
+        const promise = handleCommentInput(formData);
 
-        // TODO add toast notification
+        // Toast notification based on above functions success or failure
+        toast.promise(promise, {
+          loading: "Adding comment...",
+          success: "Comment added successfully",
+          error: "Failed to add comment!",
+        });
       }}
       className="flex items-center space-x-1"
     >
@@ -45,7 +51,7 @@ function CommentForm({ postId }: CommentFormProp) {
           type="text"
           name="commentInput"
           placeholder="Add a comment..."
-          className="bg-transparent text-sm outline-none"
+          className="bg-transparent text-sm outline-none w-full"
         />
         <button type="submit" hidden>
           Comment
