@@ -7,10 +7,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { post_id: string } }
-) {
+export async function DELETE(request: Request) {
   const { imageId } = await request.json();
   try {
     if (!imageId) {
