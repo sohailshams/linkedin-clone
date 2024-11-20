@@ -4,7 +4,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Description
 
-LinkedIn-Clone is a project developed to enhance my skills with **Next.js**, **React.js** and **TypeScript**. The application features seamless user authentication powered by Clerk, allowing users to log in with their Gmail accounts. Once logged in, users can create and delete posts, as well as interact with content by liking, disliking, and commenting on posts. Additionally, users can upload images to enhance their posts, providing a more dynamic and engaging experience.
+LinkedIn-Clone is a dynamic project designed to sharpen my skills in Next.js/React.js, and TypeScript. The application integrates smooth user authentication through Clerk, enabling users to log in effortlessly via Gmail. Once authenticated, users can create and delete posts, engage with content by liking, disliking, and commenting, and even upload images to enrich their posts. This project highlights my ability to build interactive, feature rich web applications, creating a user friendly and immersive experience.
 
 ## Technologies Used
 
